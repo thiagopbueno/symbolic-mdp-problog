@@ -11,11 +11,11 @@ class TestParser(unittest.TestCase):
 
     @classmethod
     def setUpClass(cls):
-        filename1 = os.path.join(os.path.dirname(__file__), '../models/value.pl')
+        filename1 = os.path.join(os.path.dirname(__file__), 'models/value.pl')
         with open(filename1, 'r') as input:
             cls.value = input.read()
 
-        filename2 = os.path.join(os.path.dirname(__file__), '../models/transition.pl')
+        filename2 = os.path.join(os.path.dirname(__file__), 'models/transition.pl')
         with open(filename2, 'r') as input:
             cls.transition = input.read()
 
@@ -103,10 +103,10 @@ class TestParser(unittest.TestCase):
         self.assertEqual(sum(len(token_lst) for token_lst in tokens.values()), 30)
 
     def test_yacc(self):
-        program1 = self.parser.parse(self.transition)
+        atoms1, program1 = self.parser.parse(self.transition)
         self.assertEqual(len(program1), len(self.transition.split('\n')))
 
-        program2 = self.parser.parse(self.value)
+        atoms2, program2 = self.parser.parse(self.value)
         self.assertEqual(len(program2), len(self.value.split('\n')))
 
 
