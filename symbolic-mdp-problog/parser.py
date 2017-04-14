@@ -179,4 +179,11 @@ class Parser(object):
         return tokens_dict
 
     def parse(self, data):
-        return yacc.parse(data)
+        rules = yacc.parse(data)
+        atoms = set()
+        for rule in rules:
+            atoms.add(rule.head)
+            for _, b in rule.body:
+                atoms.add(b)
+        atoms = { atom: index for index, atom in enumerate(sorted(atoms)) }
+        return atoms, rules
