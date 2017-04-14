@@ -2,8 +2,22 @@ class Rule(object):
 
     def __init__(self, head, body=[], probability=None):
         self._head = head
-        self._body = body
+        self._body = tuple(body)
         self._probability = probability
+        if probability is not None:
+            self._probability = float(probability)
+
+    @property
+    def head(self):
+        return self._head
+
+    @property
+    def body(self):
+        return self._body
+
+    @property
+    def probability(self):
+        return self._probability
 
     def __repr__(self):
         rule_repr = ''
