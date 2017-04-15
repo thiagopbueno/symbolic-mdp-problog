@@ -4,6 +4,7 @@ sys.path.insert(0, os.path.join(os.path.dirname(__file__), '../'))
 
 import unittest
 import parser
+from literal import Literal
 import wdnf
 
 
@@ -33,8 +34,8 @@ class TestWeightedDNF(unittest.TestCase):
 
         fluents = ['running(c1,1)', 'running(c2,1)', 'running(c3,1)']
         for fluent in fluents:
-            pos = ('+', fluent)
-            neg = ('-', fluent)
+            pos = Literal.positive(fluent)
+            neg = Literal.negative(fluent)
             t1 = set(wdnf1.terms_by_literals([pos]))
             t2 = set(wdnf1.terms_by_literals([neg]))
             self.assertEqual(len(t1), len(wdnf1) / 2)
@@ -53,16 +54,16 @@ class TestWeightedDNF(unittest.TestCase):
         wdnf2 = wdnf.WeightedDNF(self.atoms2)
         self.assertEqual(len(wdnf2), 0)
         for index, rule in enumerate(self.rules2):
-            pos_term = tuple([('+', rule.head)] + list(rule.body))
+            pos_term = tuple([Literal.positive(rule.head)] + list(rule.body))
             wdnf2.add_term(pos_term, rule.probability)
-            neg_term = tuple([('-', rule.head)] + list(rule.body))
+            neg_term = tuple([Literal.negative(rule.head)] + list(rule.body))
             wdnf2.add_term(neg_term, 1 - rule.probability)
         self.assertEqual(len(wdnf2), 2 * len(self.rules2))
 
         next_state_fluents = ['running(c1,1)', 'running(c2,1)', 'running(c3,1)']
         for fluent in next_state_fluents:
-            pos = ('+', fluent)
-            neg = ('-', fluent)
+            pos = Literal.positive(fluent)
+            neg = Literal.negative(fluent)
             t1 = set(wdnf2.terms_by_literals([pos]))
             t2 = set(wdnf2.terms_by_literals([neg]))
             self.assertEqual(len(t1), len(t2))
@@ -73,8 +74,8 @@ class TestWeightedDNF(unittest.TestCase):
 
         actions = ['reboot(c1)', 'reboot(c2)', 'reboot(c3)']
         for action in actions:
-            pos = ('+', action)
-            neg = ('-', action)
+            pos = Literal.positive(action)
+            neg = Literal.negative(action)
             t1 = set(wdnf2.terms_by_literals([pos]))
             t2 = set(wdnf2.terms_by_literals([neg]))
             inter = set(term for _, term in t1 & t2)

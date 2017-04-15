@@ -1,3 +1,6 @@
+from literal import Literal
+
+
 class WeightedDNF():
 
     def __init__(self, atoms):
@@ -6,8 +9,8 @@ class WeightedDNF():
         self._weights = {}
         self.__index = {}
         for atom in self._atoms:
-            self.__index[('+', atom)] = set()
-            self.__index[('-', atom)] = set()
+            self.__index[Literal.positive(atom)] = set()
+            self.__index[Literal.negative(atom)] = set()
 
     def __len__(self):
         return len(self._terms)
@@ -44,7 +47,8 @@ class WeightedDNF():
     def __update_index(self, term, index):
         term = set(term)
         for atom in self._atoms:
-            positive_literal, negative_literal = ('+', atom), ('-', atom)
+            positive_literal = Literal.positive(atom)
+            negative_literal = Literal.negative(atom)
             if positive_literal in term:
                 self.__index[positive_literal].add(index)
                 continue

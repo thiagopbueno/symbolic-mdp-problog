@@ -2,6 +2,7 @@ from ply import lex
 from ply import yacc
 
 from rule import Rule
+from literal import Literal
 
 # Tokenizer for ProbLog programs ===========================
 
@@ -124,11 +125,11 @@ def p_literal(p):
                | NEGATION atom
                | atom'''
     if len(p) == 5:
-        p[0] = ('-', p[3])
+        p[0] = Literal.negative(p[3])
     elif len(p) == 3:
-        p[0] = ('-', p[2])
+        p[0] = Literal.negative(p[2])
     else:
-        p[0] = ('+', p[1])
+        p[0] = Literal.positive(p[1])
 
 
 def p_atom(p):
@@ -183,7 +184,7 @@ class Parser(object):
         atoms = set()
         for rule in rules:
             atoms.add(rule.head)
-            for _, b in rule.body:
-                atoms.add(b)
+            for l in rule.body:
+                atoms.add(l.atom)
         atoms = { atom: index for index, atom in enumerate(sorted(atoms)) }
         return atoms, rules
