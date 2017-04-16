@@ -12,11 +12,21 @@ class WeightedDNF():
             self.__index[Literal.positive(atom)] = set()
             self.__index[Literal.negative(atom)] = set()
 
+    def __repr__(self):
+        wdnf_repr = ''
+        for term in self._terms:
+            wdnf_repr += str(term) + '\n'
+        return wdnf_repr
+
     def __len__(self):
         return len(self._terms)
 
     def __getitem__(self, index):
         return self._terms[index]
+
+    @property
+    def atoms(self):
+        return self._atoms
 
     @property
     def terms(self):
