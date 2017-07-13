@@ -1,10 +1,16 @@
 class Rule(object):
 
-    def __init__(self, head, body=[], probability=None):
+    def __init__(self, head, body=None, probability=None):
         self._head = head
-        self._body = tuple(body)
-        self._probability = probability
-        if probability is not None:
+
+        if body is None:
+            self._body = tuple()
+        else:
+            self._body = tuple(body)
+
+        if probability is None:
+            self._probability = probability
+        else:
             self._probability = float(probability)
 
     @property
